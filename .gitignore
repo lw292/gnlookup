@@ -1,0 +1,6 @@
+Gemfile
+Gemfile.lock
+.DS_Store
+test/*
+script/*
+*.gem
