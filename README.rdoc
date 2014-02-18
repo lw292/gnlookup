@@ -35,16 +35,16 @@ Geolocation data can be downloaded for free from the {geonames website}[http://d
   cities5000.zip     # Or cities1000.zip or cities15000.zip. More information below.
   admin1CodesASCII.txt
 
-Download (unzip if necessary) and copy the data files (.txt files) to your Rails application's db/geonames directory (create that directory if necessary).
+Download (unzip if necessary) and copy the data files (.txt files) to your Rails application's +db/geonames+ directory (create that directory if necessary).
 
 == Importing the data
 
 Once you've saved the data to your application, you can import the data to your database with this rake task:
   rake gnlookup:import
   
-Because it takes a long time to import cities data, by default the system chooses the cities5000.txt file, which includes information about cities with a population larger than 5000. This process will take approximately 5 - 10 minutes.
+Because it takes a long time to import cities data, by default the system chooses the +cities5000.txt+ file, which includes information about cities with a population larger than 5000. This process will take approximately 5 - 10 minutes.
 
-You can also choose to import the cities1000.txt or the cities15000.txt files instead of the cities5000.txt file:
+Alternatively, you can also choose to import the +cities1000.txt+ or the +cities15000.txt+ files instead of the +cities5000.txt+ file:
   rake gnlookup:import CITIES=cities1000
   rake gnlookup:import CITIES=cities15000
 
@@ -55,7 +55,9 @@ The former file will take significantly longer to import. It may also affect the
 Here are some examples of how to query the database in your code:
 
   cities = Gnlookup::City.where("name =?", "New Haven")
-  # => [#<Gnlookup::City id: 42035, geoname_id: 4839366, region_id: 3611, name: "New Haven", name_ascii: "New Haven", lat: "41.30815", lng: "-72.92816", created_at: "2014-02-07 19:47:12", updated_at: "2014-02-07 19:47:12">, #<Gnlookup::City id: 42499, geoname_id: 4924104, region_id: 3614, name: "New Haven", name_ascii: "New Haven", lat: "41.0706", lng: "-85.01441", created_at: "2014-02-07 19:47:19", updated_at: "2014-02-07 19:47:19">, #<Gnlookup::City id: 42888, geoname_id: 5003384, region_id: 3616, name: "New Haven", name_ascii: "New Haven", lat: "43.09364", lng: "-84.15331", created_at: "2014-02-07 19:47:24", updated_at: "2014-02-07 19:47:24">]
+  # => [#<Gnlookup::City id: 42035, geoname_id: 4839366, region_id: 3611, name: "New Haven", name_ascii: "New Haven", lat: "41.30815", lng: "-72.92816", created_at: "2014-02-07 19:47:12", updated_at: "2014-02-07 19:47:12">,
+        #<Gnlookup::City id: 42499, geoname_id: 4924104, region_id: 3614, name: "New Haven", name_ascii: "New Haven", lat: "41.0706", lng: "-85.01441", created_at: "2014-02-07 19:47:19", updated_at: "2014-02-07 19:47:19">,
+        #<Gnlookup::City id: 42888, geoname_id: 5003384, region_id: 3616, name: "New Haven", name_ascii: "New Haven", lat: "43.09364", lng: "-84.15331", created_at: "2014-02-07 19:47:24", updated_at: "2014-02-07 19:47:24">]
 
   cities[0].region.name
   # => "Connecticut"
