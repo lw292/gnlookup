@@ -6,12 +6,12 @@ Gnlookup integrates free geolocation data from {geonames.org}[http://www.geoname
 
 == Setting up your Rails application
 
-After you create your new Rails application or if you have an existing Rails application, take the following steps to configure it to use Gnlookup.
+After you create your new Rails application or if you have an existing Rails application, take the following steps to use Gnlookup.
 
-Add this gem to your Gemfile:
+Add this line to your Gemfile:
   gem 'gnlookup', :git => 'https://github.com/lw292/gnlookup.git'
 
-If you are running Rails 4.0, you will need this line too in the Gemfile:
+At this point, if you are running Rails 4.x, you will need this line too in the Gemfile:
   gem 'protected_attributes'
 
 Then run the +bundle+ command to install:
@@ -30,7 +30,7 @@ If for some reason you already have tables in your database by the same names, y
 
 == Getting geonames data
 
-Geolocation data can be downloaded for free from the {geonames website}[http://download.geonames.org/export/dump/]. For this gem to work, you will need at least three files:
+Geolocation data can be downloaded for free from the {geonames website}[http://download.geonames.org/export/dump/]. For Gnlookup to work, you will need at least three files:
   countryInfo.txt
   cities5000.zip     # Or cities1000.zip or cities15000.zip. More information below.
   admin1CodesASCII.txt
@@ -40,7 +40,7 @@ Download (unzip if necessary) and copy the data files (.txt files) to your Rails
 == Importing the data
 
 Once you've saved the data to your application, you can import the data to your database with this rake task:
-rake gnlookup:import
+  rake gnlookup:import
   
 Because it takes a long time to import cities data, by default the system chooses the cities5000.txt file, which includes information about cities with a population larger than 5000. This process will take approximately 5 - 10 minutes.
 
