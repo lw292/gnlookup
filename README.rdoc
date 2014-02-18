@@ -2,13 +2,13 @@
 
 == Description
 
-Gnlookup integrates free geolocation data from {geonames.org}[http://www.geonames.org/] to your Ruby on Rails application. Gnlookup was inspired by and partly adapted from the work of Resistor Software: https://github.com/chendo/geonames.
+Gnlookup integrates free geolocation data from {geonames.org}[http://www.geonames.org/] to your Ruby on Rails application. Gnlookup was inspired by and partly adapted from the work of {Resistor Software}[https://github.com/chendo/geonames].
 
 == Setting up your Rails application
 
 After you create your new Rails application or if you have an existing Rails application, take the following steps to use Gnlookup.
 
-Add this line to your Gemfile:
+Add this line to your +Gemfile+:
   gem 'gnlookup', :git => 'https://github.com/lw292/gnlookup.git'
 
 At this point, if you are running Rails 4.x, you will need this line too in the Gemfile:
