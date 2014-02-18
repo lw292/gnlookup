@@ -11,7 +11,7 @@ After you create your new Rails application or if you have an existing Rails app
 Add this line to your +Gemfile+:
   gem 'gnlookup', :git => 'https://github.com/lw292/gnlookup.git'
 
-At this point, if you are running Rails 4.x, you will need this line too in the Gemfile:
+At this point, if you are running Rails 4.x, you will need this line too in the +Gemfile+:
   gem 'protected_attributes'
 
 Then run the +bundle+ command to install:
