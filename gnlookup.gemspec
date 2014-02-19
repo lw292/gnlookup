@@ -12,10 +12,5 @@ Gem::Specification.new do |s|
   s.homepage    = "http://library.medicine.yale.edu/"
   s.summary     = "Gnlookup integrates free geolocation data from geonames.org to your Ruby on Rails application."
   s.description = "Gnlookup allows you to integrate free city-level geolocation data from geonames.org to your Ruby on Rails application."
-
   s.files = Dir["{app,config,db,lib}/**/*"] + ["MIT-LICENSE", "Rakefile", "README.rdoc"]
-  s.test_files = Dir["test/**/*"]
-
-  s.add_dependency "rails"
-  s.add_development_dependency "sqlite3"
 end
