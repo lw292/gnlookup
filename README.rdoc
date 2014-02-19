@@ -2,7 +2,7 @@
 
 == Description
 
-Gnlookup integrates free geolocation data from {geonames.org}[http://www.geonames.org/] to your Ruby on Rails application. Gnlookup was inspired by and partly adapted from the work of {Resistor Software}[https://github.com/chendo/geonames].
+Gnlookup integrates free geolocation data from {geonames.org}[http://www.geonames.org/] to your Ruby on Rails application.
 
 == Setting up your Rails application
 
@@ -73,4 +73,4 @@ Here are some examples of how to query the database in your code:
 
 == License
 
-This project rocks and uses MIT-LICENSE.
+This project rocks and uses MIT-LICENSE. Gnlookup was inspired by and partly adapted from the work of {Resistor Software}[https://github.com/chendo/geonames].
