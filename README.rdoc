@@ -6,7 +6,7 @@ Gnlookup integrates free geolocation data from {geonames.org}[http://www.geoname
 
 == Setting up your Rails application
 
-After you create your new Rails application or if you have an existing Rails application, take the following steps to use Gnlookup.
+Take the following steps to configure your Rails application to use Gnlookup.
 
 Add this line to your +Gemfile+:
   gem 'gnlookup', :git => 'https://github.com/lw292/gnlookup.git'
