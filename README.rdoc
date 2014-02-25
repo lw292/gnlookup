@@ -30,12 +30,12 @@ If for some reason you already have tables in your database by the same names, y
 
 == Getting geonames data
 
-Geolocation data can be downloaded for free from the {geonames website}[http://download.geonames.org/export/dump/]. For Gnlookup to work, you will need at least three files:
+Geolocation data can be downloaded for free from geonames' {gazetteer data download page}[http://download.geonames.org/export/dump/]. For Gnlookup to work, you will need at least three files:
   countryInfo.txt
   cities5000.zip     # Or cities1000.zip or cities15000.zip. More information below.
   admin1CodesASCII.txt
 
-You will also need to download free US zipcode data from the geonames {zipcode data download page}[http://download.geonames.org/export/zip/]. You will need this file:
+You will also need to download free US zipcode data from the geonames {postal code data download page}[http://download.geonames.org/export/zip/]. You will need this file:
   US.zip
 
 Download (unzip if necessary) and copy the data files (.txt files) to your Rails application's +db/geonames+ directory (create that directory if necessary). You should end up having these files:
