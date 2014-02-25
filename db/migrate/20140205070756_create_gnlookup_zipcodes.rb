@@ -1,7 +1,7 @@
 class CreateGnlookupZipcodes< ActiveRecord::Migration
   def change
     create_table :gnlookup_zipcodes do |t|
-      t.integer :region_id
+      t.integer :city_id
       t.string :country_iso
       t.string :zipcode
       t.string :place_name

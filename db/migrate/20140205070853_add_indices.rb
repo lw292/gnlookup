@@ -10,7 +10,7 @@ class AddIndices < ActiveRecord::Migration
     add_index :gnlookup_countries, :iso3
     add_index :gnlookup_countries, :name
     add_index :gnlookup_zipcodes, :zipcode
-    add_index :gnlookup_zipcodes, :region_id
+    add_index :gnlookup_zipcodes, :city_id
     add_index :gnlookup_zipcodes, :place_name
     add_index :gnlookup_zipcodes, :admin_name
     add_index :gnlookup_zipcodes, :admin_code

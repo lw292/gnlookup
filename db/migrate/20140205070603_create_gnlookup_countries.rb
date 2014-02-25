@@ -4,7 +4,6 @@ class CreateGnlookupCountries < ActiveRecord::Migration
       t.string :iso
       t.string :iso3
       t.string :name
-      t.integer :geoname_id
 
       t.timestamps
     end

@@ -11,7 +11,7 @@ namespace :gnlookup do
     # Allow user-specified file for cities. Default to cities5000.txt
     args = ENV['CITIES'].split(',') if !ENV['CITIES'].blank?
     if !args.blank? && !args[0].blank?
-      CITIES = "db/geonames/"+arg[0]+".txt"
+      CITIES = "db/geonames/"+args[0]+".txt"
     else
       CITIES = "db/geonames/cities5000.txt"
     end
@@ -34,10 +34,10 @@ namespace :gnlookup do
       while (row)
         row = row.split(/\t/)
         # Does the country exist already in the db?
-        c = Gnlookup::Country.find_by_geoname_id(row[11])
+        c = Gnlookup::Country.find(:first, :conditions => {:iso => row[0], :iso3 => row[1], :name => row[4]})
         # If not, create it.
         if c.nil?
-          c = Gnlookup::Country.create(:iso => row[0], :iso3 => row[1], :name => row[4], :geoname_id => row[16])
+          c = Gnlookup::Country.create(:iso => row[0], :iso3 => row[1], :name => row[4])
         end
         # Save the country's id to the data holder
         # Example: countries["CN"]: {"id" => 89}
@@ -105,10 +105,10 @@ namespace :gnlookup do
         # Proceed only if such a region exists in the db
         if !region_id.nil?
           # Does the city exist already in the db?
-          c = Gnlookup::City.find(:first, :conditions => {:geoname_id => row[0], :name => row[1], :region_id => region_id})
+          c = Gnlookup::City.find(:first, :conditions => {:name => row[1], :region_id => region_id})
           # If not, create it.
           if c.nil?
-            Gnlookup::City.create(:geoname_id => row[0], :name => row[1], :region_id => region_id, :name_ascii => row[2], :lat => row[4], :lng => row[5])
+            Gnlookup::City.create(:name => row[1], :region_id => region_id, :name_ascii => row[2], :lat => row[4], :lng => row[5])
           end
           # Increment the counter
           count += 1
@@ -132,9 +132,13 @@ namespace :gnlookup do
       while (row = f.gets)
         row = row.split(/\t/)
         region_id = countries[row[0]][row[4]]
-        z = Gnlookup::Zipcode.find(:first, :conditions => {:country_iso => row[0], :zipcode => row[1], :place_name => row[2], :admin_name => row[3], :admin_code => row[4], :lat => row[9], :lng => row[10]})
+        z = Gnlookup::Zipcode.find(:first, :conditions => {:country_iso => row[0], :zipcode => row[1], :place_name => row[2], :admin_name => row[3], :admin_code => row[4]})
         if z.nil?
-          Gnlookup::Zipcode.create(:country_iso => row[0], :zipcode => row[1], :place_name => row[2], :admin_name => row[3], :admin_code => row[4], :lat => row[9], :lng => row[10], :region_id => region_id)
+          c = Gnlookup::City.find(:first, :conditions => {:name => row[2], :region_id => region_id})
+          if c.nil?
+            c = Gnlookup::City.create(:name => row[2], :region_id => region_id, :name_ascii => row[2], :lat => row[9], :lng => row[10])
+          end
+          Gnlookup::Zipcode.create(:country_iso => row[0], :zipcode => row[1], :place_name => row[2], :admin_name => row[3], :admin_code => row[4], :lat => row[9], :lng => row[10], :city_id => c.id)
         end
         # Increment the counter
         count += 1
