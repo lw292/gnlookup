@@ -35,7 +35,14 @@ Geolocation data can be downloaded for free from the {geonames website}[http://d
   cities5000.zip     # Or cities1000.zip or cities15000.zip. More information below.
   admin1CodesASCII.txt
 
-Download (unzip if necessary) and copy the data files (.txt files) to your Rails application's +db/geonames+ directory (create that directory if necessary).
+You will also need to download free US zipcode data from the geonames {zipcode data download page}[http://download.geonames.org/export/zip/]. You will need this file:
+  US.zip
+
+Download (unzip if necessary) and copy the data files (.txt files) to your Rails application's +db/geonames+ directory (create that directory if necessary). You should end up having these files:
+  db/geonames/countryInfo.txt
+  db/geonames/cities5000.txt       # Or cities1000.txt or cities15000.txt. More information below.
+  db/geonames/admin1CodesASCII.txt
+  db/geonames/US.txt
 
 == Importing the data
 
@@ -82,8 +89,6 @@ Sometimes the Census-Designated Place (CDP) names or the administrative level fo
   Amherst Center, Massachusetts
   North Amherst, Massachusetts
   South Amherst, Massachusetts
-
-Another example, "Washington, DC" is not considered a city in the geonames data, but rather as a "region" with a higher administrative level.
 
 This will cause problems if your code tries to map these place names to cities. Your code either should be flexible enough to accomodate these issues, or you may want to manually add "dummy" records for such cities to your database.
 

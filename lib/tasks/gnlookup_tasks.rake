@@ -7,6 +7,7 @@ namespace :gnlookup do
     # Data files
     COUNTRIES = "db/geonames/countryInfo.txt"
     REGIONS = "db/geonames/admin1CodesASCII.txt"
+    US_ZIPCODES = "db/geonames/US.txt"
     # Allow user-specified file for cities. Default to cities5000.txt
     args = ENV['CITIES'].split(',') if !ENV['CITIES'].blank?
     if !args.blank? && !args[0].blank?
@@ -16,7 +17,7 @@ namespace :gnlookup do
     end
 
     # Proceed only if all three files exist.
-    if File.exists?(COUNTRIES) && File.exists?(REGIONS) && File.exists?(CITIES)
+    if File.exists?(COUNTRIES) && File.exists?(REGIONS) && File.exist?(US_ZIPCODES) && File.exists?(CITIES)
       # Empty data holder
       countries = {}
 
@@ -122,6 +123,31 @@ namespace :gnlookup do
         end
       end
       puts "\nThere are now #{Gnlookup::City.count()} cities in the system."
+      
+      # US ZIPCODES
+      puts "\nImporting US Zipcodes ..."
+      f = File.open(US_ZIPCODES)
+      count = 0
+      # Process each row of data
+      while (row = f.gets)
+        row = row.split(/\t/)
+        region_id = countries[row[0]][row[4]]
+        z = Gnlookup::Zipcode.find(:first, :conditions => {:country_iso => row[0], :zipcode => row[1], :place_name => row[2], :admin_name => row[3], :admin_code => row[4], :lat => row[9], :lng => row[10]})
+        if z.nil?
+          Gnlookup::Zipcode.create(:country_iso => row[0], :zipcode => row[1], :place_name => row[2], :admin_name => row[3], :admin_code => row[4], :lat => row[9], :lng => row[10], :region_id => region_id)
+        end
+        # Increment the counter
+        count += 1
+        # Display the progress
+        if count%100 == 0
+          print "#"
+          $stdout.flush
+        end
+        if count%10000 == 0
+          puts " " + count.to_s + " US zipcodes imported.\n"
+        end
+      end
+      puts "\nThere are now #{Gnlookup::Zipcode.count()} US zipcodes in the system."
     else
       puts "\nAt least one data file is missing. Please check."
     end
