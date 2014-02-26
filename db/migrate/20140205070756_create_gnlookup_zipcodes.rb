@@ -3,10 +3,9 @@ class CreateGnlookupZipcodes< ActiveRecord::Migration
     create_table :gnlookup_zipcodes do |t|
       t.integer :city_id
       t.string :country_iso
+      t.string :country_iso_n
       t.string :zipcode
-      t.string :place_name
-      t.string :admin_name
-      t.string :admin_code
+      t.string :zipcode_n
       t.string :lat
       t.string :lng
 

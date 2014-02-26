@@ -3,7 +3,7 @@ class CreateGnlookupCities < ActiveRecord::Migration
     create_table :gnlookup_cities do |t|
       t.integer :region_id
       t.string :name
-      t.string :name_ascii
+      t.string :name_n
       t.string :lat
       t.string :lng
 

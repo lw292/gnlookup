@@ -4,6 +4,8 @@
 namespace :gnlookup do
   desc "Import geonames data from the db/geonames directory."
   task :import => :environment do
+    require "i18n"
+    
     # Data files
     COUNTRIES = "db/geonames/countryInfo.txt"
     REGIONS = "db/geonames/admin1CodesASCII.txt"
@@ -37,7 +39,7 @@ namespace :gnlookup do
         c = Gnlookup::Country.find(:first, :conditions => {:iso => row[0], :iso3 => row[1], :name => row[4]})
         # If not, create it.
         if c.nil?
-          c = Gnlookup::Country.create(:iso => row[0], :iso3 => row[1], :name => row[4])
+          c = Gnlookup::Country.create(:iso => row[0], :iso_n => I18n.transliterate(row[0]).downcase, :iso3 => row[1], :iso3_n => I18n.transliterate(row[1]).downcase, :name => row[4], :name_n => I18n.transliterate(row[4]).downcase)
         end
         # Save the country's id to the data holder
         # Example: countries["CN"]: {"id" => 89}
@@ -75,7 +77,7 @@ namespace :gnlookup do
             r = Gnlookup::Region.find(:first, :conditions => {:name => row[1], :iso => region_index, :country_id => country_id})
             # If not, create it.
             if r.nil?
-              r = Gnlookup::Region.create(:name => row[1], :iso => region_index, :country_id => country_id)
+              r = Gnlookup::Region.create(:name => row[1], :name_n => I18n.transliterate(row[1]).downcase, :iso => region_index, :iso_n => I18n.transliterate(region_index).downcase, :country_id => country_id)
             end
             # Save region's id to the data holder
             # Example: countries["CN"]: {"id" => 89, "23" => 123, "56" => 567, ...}
@@ -108,7 +110,7 @@ namespace :gnlookup do
           c = Gnlookup::City.find(:first, :conditions => {:name => row[1], :region_id => region_id})
           # If not, create it.
           if c.nil?
-            Gnlookup::City.create(:name => row[1], :region_id => region_id, :name_ascii => row[2], :lat => row[4], :lng => row[5])
+            Gnlookup::City.create(:name => row[1], :name_n => I18n.transliterate(row[1]).downcase, :region_id => region_id, :lat => row[4], :lng => row[5])
           end
           # Increment the counter
           count += 1
@@ -132,13 +134,13 @@ namespace :gnlookup do
       while (row = f.gets)
         row = row.split(/\t/)
         region_id = countries[row[0]][row[4]]
-        z = Gnlookup::Zipcode.find(:first, :conditions => {:country_iso => row[0], :zipcode => row[1], :place_name => row[2], :admin_name => row[3], :admin_code => row[4]})
+        z = Gnlookup::Zipcode.find(:first, :conditions => {:country_iso => row[0], :zipcode => row[1]})
         if z.nil?
           c = Gnlookup::City.find(:first, :conditions => {:name => row[2], :region_id => region_id})
           if c.nil?
-            c = Gnlookup::City.create(:name => row[2], :region_id => region_id, :name_ascii => row[2], :lat => row[9], :lng => row[10])
+            c = Gnlookup::City.create(:name => row[2], :name_n => I18n.transliterate(row[2]).downcase, :region_id => region_id, :lat => row[9], :lng => row[10])
           end
-          Gnlookup::Zipcode.create(:country_iso => row[0], :zipcode => row[1], :place_name => row[2], :admin_name => row[3], :admin_code => row[4], :lat => row[9], :lng => row[10], :city_id => c.id)
+          Gnlookup::Zipcode.create(:country_iso => row[0], :country_iso_n => I18n.transliterate(row[0]).downcase, :zipcode => row[1], :zipcode_n => I18n.transliterate(row[1]).downcase, :lat => row[9], :lng => row[10], :city_id => c.id)
         end
         # Increment the counter
         count += 1
