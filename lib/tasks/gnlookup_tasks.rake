@@ -36,16 +36,16 @@ namespace :gnlookup do
       while (row)
         row = row.split(/\t/)
         # Does the country exist already in the db?
-        c = Gnlookup::Country.find(:first, :conditions => {:iso => row[0], :iso3 => row[1], :name => row[4]})
+        # c = Gnlookup::Country.where("iso_n = ? AND iso3_n = ? AND name_n = ?", I18n.transliterate(row[0]).downcase, I18n.transliterate(row[1]).downcase, I18n.transliterate(row[4]).downcase).first
         # If not, create it.
-        if c.nil?
+        # if c.nil?
           c = Gnlookup::Country.create(:iso => row[0], :iso_n => I18n.transliterate(row[0]).downcase, :iso3 => row[1], :iso3_n => I18n.transliterate(row[1]).downcase, :name => row[4], :name_n => I18n.transliterate(row[4]).downcase)
-        end
+        # end
         # Save the country's id to the data holder
         # Example: countries["CN"]: {"id" => 89}
-        unless c.nil?
+        # unless c.nil?
           countries[row[0]] = {"id" => c.id}
-        end
+        # end
         # Read the next row
         row = f.gets
         # Increment the counter
@@ -74,16 +74,16 @@ namespace :gnlookup do
           # 00 is not a valid region index
           if region_index != '00'
             # Does the region exist already in the db?
-            r = Gnlookup::Region.find(:first, :conditions => {:name => row[1], :iso => region_index, :country_id => country_id})
+            # r = Gnlookup::Region.where("name_n = ? AND iso_n = ? AND country_id = ?", I18n.transliterate(row[1]).downcase, I18n.transliterate(region_index).downcase, country_id).first
             # If not, create it.
-            if r.nil?
+            # if r.nil?
               r = Gnlookup::Region.create(:name => row[1], :name_n => I18n.transliterate(row[1]).downcase, :iso => region_index, :iso_n => I18n.transliterate(region_index).downcase, :country_id => country_id)
-            end
+            # end
             # Save region's id to the data holder
             # Example: countries["CN"]: {"id" => 89, "23" => 123, "56" => 567, ...}
-            unless r.nil?
+            # unless r.nil?
               countries[country][region_index] = r.id
-            end
+            # end
           end
         end
         # Increment the counter
@@ -107,11 +107,11 @@ namespace :gnlookup do
         # Proceed only if such a region exists in the db
         if !region_id.nil?
           # Does the city exist already in the db?
-          c = Gnlookup::City.find(:first, :conditions => {:name => row[1], :region_id => region_id})
+          # c_count = Gnlookup::City.where("name_n = ? AND region_id = ?", I18n.transliterate(row[1]).downcase, region_id).count
           # If not, create it.
-          if c.nil?
+          # if c_count == 0
             Gnlookup::City.create(:name => row[1], :name_n => I18n.transliterate(row[1]).downcase, :region_id => region_id, :lat => row[4], :lng => row[5])
-          end
+          # end
           # Increment the counter
           count += 1
           # Display the progress
@@ -134,14 +134,14 @@ namespace :gnlookup do
       while (row = f.gets)
         row = row.split(/\t/)
         region_id = countries[row[0]][row[4]]
-        z = Gnlookup::Zipcode.find(:first, :conditions => {:country_iso => row[0], :zipcode => row[1]})
-        if z.nil?
-          c = Gnlookup::City.find(:first, :conditions => {:name => row[2], :region_id => region_id})
+        # z_count = Gnlookup::Zipcode.where("country_iso_n = ? AND zipcode_n = ?", I18n.transliterate(row[0]).downcase, I18n.transliterate(row[1]).downcase).count
+        # if z_count == 0
+          c = Gnlookup::City.where("name_n = ? AND region_id = ?", I18n.transliterate(row[2]).downcase, region_id).first
           if c.nil?
             c = Gnlookup::City.create(:name => row[2], :name_n => I18n.transliterate(row[2]).downcase, :region_id => region_id, :lat => row[9], :lng => row[10])
           end
           Gnlookup::Zipcode.create(:country_iso => row[0], :country_iso_n => I18n.transliterate(row[0]).downcase, :zipcode => row[1], :zipcode_n => I18n.transliterate(row[1]).downcase, :lat => row[9], :lng => row[10], :city_id => c.id)
-        end
+        # end
         # Increment the counter
         count += 1
         # Display the progress

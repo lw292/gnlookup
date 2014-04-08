@@ -1,6 +1,6 @@
 module Gnlookup
   class City < ActiveRecord::Base
-    attr_accessible :lat, :lng, :name, :name_ascii, :region_id
+    attr_accessible :lat, :lng, :name, :name_n, :name_ascii, :region_id
     belongs_to :region
     has_many :zipcodes
   

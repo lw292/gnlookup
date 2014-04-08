@@ -49,7 +49,7 @@ Download (unzip if necessary) and copy the data files (.txt files) to your Rails
 Once you've saved the data to your application, you can import the data to your database with this rake task:
   rake gnlookup:import
   
-Because it takes a long time to import cities data, by default the system chooses the +cities5000.txt+ file, which includes information about cities with a population larger than 5000. This process will take approximately 5 - 10 minutes.
+Because it takes a long time to import cities data, by default the system chooses the +cities5000.txt+ file, which includes information about cities with a population larger than 5000.
 
 Alternatively, you can also choose to import the +cities1000.txt+ or the +cities15000.txt+ files instead of the +cities5000.txt+ file:
   rake gnlookup:import CITIES=cities1000
